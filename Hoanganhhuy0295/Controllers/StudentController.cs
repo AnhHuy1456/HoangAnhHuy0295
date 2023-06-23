@@ -5,16 +5,16 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Hoanganhhuy0295.Data;
 using Hoanganhhuy0295.Models;
-using MvcMovie.Data;
 
 namespace Hoanganhhuy0295.Controllers
 {
     public class StudentController : Controller
     {
-        private readonly MvcMovieContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public StudentController(MvcMovieContext context)
+        public StudentController(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -22,20 +22,20 @@ namespace Hoanganhhuy0295.Controllers
         // GET: Student
         public async Task<IActionResult> Index()
         {
-              return _context.Student != null ? 
-                          View(await _context.Student.ToListAsync()) :
-                          Problem("Entity set 'MvcMovieContext.Student'  is null.");
+              return _context.Students != null ? 
+                          View(await _context.Students.ToListAsync()) :
+                          Problem("Entity set 'ApplicationDbContext.Students'  is null.");
         }
 
         // GET: Student/Details/5
         public async Task<IActionResult> Details(string id)
         {
-            if (id == null || _context.Student == null)
+            if (id == null || _context.Students == null)
             {
                 return NotFound();
             }
 
-            var student = await _context.Student
+            var student = await _context.Students
                 .FirstOrDefaultAsync(m => m.Masinhvien == id);
             if (student == null)
             {
@@ -70,12 +70,12 @@ namespace Hoanganhhuy0295.Controllers
         // GET: Student/Edit/5
         public async Task<IActionResult> Edit(string id)
         {
-            if (id == null || _context.Student == null)
+            if (id == null || _context.Students == null)
             {
                 return NotFound();
             }
 
-            var student = await _context.Student.FindAsync(id);
+            var student = await _context.Students.FindAsync(id);
             if (student == null)
             {
                 return NotFound();
@@ -121,12 +121,12 @@ namespace Hoanganhhuy0295.Controllers
         // GET: Student/Delete/5
         public async Task<IActionResult> Delete(string id)
         {
-            if (id == null || _context.Student == null)
+            if (id == null || _context.Students == null)
             {
                 return NotFound();
             }
 
-            var student = await _context.Student
+            var student = await _context.Students
                 .FirstOrDefaultAsync(m => m.Masinhvien == id);
             if (student == null)
             {
@@ -141,14 +141,14 @@ namespace Hoanganhhuy0295.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            if (_context.Student == null)
+            if (_context.Students == null)
             {
-                return Problem("Entity set 'MvcMovieContext.Student'  is null.");
+                return Problem("Entity set 'ApplicationDbContext.Students'  is null.");
             }
-            var student = await _context.Student.FindAsync(id);
+            var student = await _context.Students.FindAsync(id);
             if (student != null)
             {
-                _context.Student.Remove(student);
+                _context.Students.Remove(student);
             }
             
             await _context.SaveChangesAsync();
@@ -157,7 +157,7 @@ namespace Hoanganhhuy0295.Controllers
 
         private bool StudentExists(string id)
         {
-          return (_context.Student?.Any(e => e.Masinhvien == id)).GetValueOrDefault();
+          return (_context.Students?.Any(e => e.Masinhvien == id)).GetValueOrDefault();
         }
     }
 }
