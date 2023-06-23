@@ -1,5 +1,16 @@
-var builder = WebApplication.CreateBuilder(args);
+using System.Net.Mime;
+using Hoanganhhuy0295.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using MvcMovie.Data;
 
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<MvcMovieContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("MvcMovieContext") ?? throw new InvalidOperationException("Connection string 'MvcMovieContext' not found.")));
+
+var ConnectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+options.UseSqlite(ConnectionString));
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
